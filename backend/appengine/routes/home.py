@@ -8,7 +8,7 @@ from search_indexes import search_user
 
 @login_not_required
 @no_csrf
-def index(name='', group='false'):
+def index(name='Renzo', group='false'):
     if group:
         group = group == 'true'
     result = search_user(name, group)

@@ -32,7 +32,7 @@ def search_user(name, admin=False):
 
     # Build the QueryOptions
     # Create a FieldExpression
-    expr2 = search.FieldExpression(name='name_snippet', expression='snippet("%s", name, 10,2)'%name)
+    expr2 = search.FieldExpression(name='name_snippet', expression='snippet("%s", name, 20)'%name)
     options=search.QueryOptions(sort_options=sort_opts,returned_expressions=[expr2])
     query=search.Query(query_str,options)
     return user_index.search(query)
