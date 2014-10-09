@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+
 from google.appengine.api import users
+
 from config.template_middleware import TemplateResponse
 from gaecookie.decorator import no_csrf
 from gaepermission import facade
 from gaepermission.decorator import login_not_required
+from search_indexes import get_or_create_user_document
 from tekton import router
 from tekton.gae.middleware.redirect import RedirectResponse
 import settings
@@ -22,4 +25,7 @@ def index(_resp, ret_path='/'):
             facade.send_passwordless_login_link(user.email(),
                                                 settings.APP_URL + pending_path).execute()
             TemplateResponse({'provider': 'Google', 'email': user.email()}, 'login/pending.html')
+        else:
+            main_user=cmd.main_user_from_external
+            user_document=get_or_create_user_document(main_user)
     return RedirectResponse(ret_path)

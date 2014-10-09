@@ -4,6 +4,7 @@ from config.template_middleware import TemplateResponse
 from gaecookie.decorator import no_csrf
 from gaepermission.decorator import login_required
 from pytz import common_timezones
+from search_indexes import save_user_doc
 import settings
 from tekton import router
 from tekton.gae.middleware.redirect import RedirectResponse
@@ -16,6 +17,7 @@ def edit(_logged_user, name, user_locale, timezone):
     _logged_user.locale = user_locale
     _logged_user.timezone = timezone
     _logged_user.put()
+    save_user_doc(_logged_user)
     return RedirectResponse('/')
 
 

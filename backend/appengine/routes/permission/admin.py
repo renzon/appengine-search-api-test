@@ -4,7 +4,9 @@ from config.template_middleware import TemplateResponse
 from gaecookie.decorator import no_csrf
 from gaepermission import facade
 from gaepermission.decorator import permissions
+from gaepermission.model import MainUser
 from permission_app.model import ALL_PERMISSIONS_LIST, ADMIN
+from search_indexes import save_user_doc
 from tekton import router
 from tekton.gae.middleware.json_middleware import JsonResponse
 
@@ -36,3 +38,4 @@ def list_users(email_prefix='', cursor=None):
 @permissions(ADMIN)
 def update(user_id, groups):
     facade.update_user_groups(user_id, groups).execute()
+    save_user_doc(MainUser.get_by_id(int(user_id)))
